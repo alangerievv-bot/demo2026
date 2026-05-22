@@ -1,0 +1,43 @@
+{%load django_bootstrap5%}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block title %}Магазин обуви{% endblock title %}</title>
+    {%bootstrap_css%}
+    {%load static%}
+    <link rel="icon" href="{% static 'images/icon.ico' %}">
+    <style>
+      body {font-family: 'Times New Roman', Times, serif;}
+      .secondary-bg {background-color: #7FFF00;}
+      .accent {background-color: #00FA9A;}
+      tr.discount-high td {background-color: #2E8B57}
+      tr.out-of-stock td {background-color: #ADD8E6}
+      .original-price {text-decoration: line-through; color: red;}
+    </style>
+  </head>
+<body>
+  <div class="container mt-3">
+    <div class="d-flex justify-content-between items-center secondary-bg mb-3 p-2 rounded">
+      <a href="{% url 'product_list' %}">
+        <img src="{% static 'images/icon.jpg'%}" height="40">
+      </a>
+      <div>
+        {% if request.session.user_name %}
+        {{request.session.user_name}}
+        <a href="{% url "logout" %}">Выйти</a>
+        {% else %}
+        <a href="{% url "login" %}">Войти</a>
+        {% endif %}
+      </div>
+    </div>
+    {% if messages %}
+      {% for message in  messages%}
+        <div class="d-flex justify-content-beetwen alert alert-{% if message.tags == 'error' %}danger{% else %}success{% endif %}">
+          <div>{{message}}</div>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% block content %}{% endblock content %}
+  </div>
+</body>
+</html>

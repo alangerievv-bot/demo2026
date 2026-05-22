@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Добавление товара{% endblock title %}
+
+{% block content %}
+<h4>Добавление нового товара</h4>
+
+<form method="post">
+  {% csrf_token %}
+  <div class="mt-2">
+    <label>Название товара</label>
+    <input class="form-control" name="name" value="{{name}}">
+  </div>
+
+  <div class="mt-2">
+    <label>Описание</label>
+    <input class="form-control" name="description" value="{{description}}">
+  </div>
+
+  <div class="mt-2">
+    <label>Единица измерения</label>
+    <select class="form-select" name="unit">
+      {%for unit in units%}
+      <option value="{{unit.id}}">{{unit.name}}</option>
+      {%endfor%}
+    </select>
+  </div>
+
+  <div class="mt-2">
+    <label>Бренд</label>
+    <select class="form-select" name="brand">
+      {%for brand in brands%}
+      <option value="{{brand.id}}">{{brand.name}}</option>
+      {%endfor%}
+    </select>
+  </div>  
+
+  <div class="mt-2">
+    <label>Тип</label>
+    <select class="form-select" name="type">
+      {%for type in types%}
+      <option value="{{type.id}}">{{type.name}}</option>
+      {%endfor%}
+    </select>
+  </div>
+
+  <div class="mt-2">
+    <label>Скидка</label>
+    <input class="form-control" type="number" min="0.1"  step="0.1" required name="discount" value="{{discount}}">
+  </div>
+  
+  <div class="mt-2">
+    <label>Цена</label>
+    <input class="form-control" type="number" min="0.1" step="0.1" required name="price" value="{{price}}">
+  </div>
+
+  <div class="my-2">
+    <label>Количество</label>
+    <input class="form-control" type="number" min="0.1" step="0.1" required name="quantity" value="{{quantity}}">
+  </div>
+  <a class="btn btn-secondary" href="{% url 'product_list' %}">назад</a>
+  <button type="submit" class="btn accent">Добавить товар</button>
+</form>
+
+{% endblock content %}

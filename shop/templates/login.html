@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Вход в систему{% endblock title %}
+{% block content %}
+<h4>Вход в систему</h4>
+
+<form method="post" style="max-width: 300px;">
+{% csrf_token %}
+  <div class="mt-2">
+    <input type="text" name="login" class="form-control">
+  </div>
+  <div class="mt-2">
+    <input type="text" name="password" class="form-control">
+  </div>
+  <div class="mt-2">
+  <button class="btn accent">Войти</button>
+  <button class="btn btn-secondary" value="1" name="guest">Войти как гость</button>
+  </div>
+</form>
+
+
+
+
+{% endblock content %}

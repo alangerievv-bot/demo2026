@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Редактирование товара{% endblock title %}
+
+{% block content %}
+<h4>Редактирование товара</h4>
+
+<form method="post">
+  {% csrf_token %}
+  <div class="mt-2">
+    <label>Название товара</label>
+    <input class="form-control" name="name" value="{{product.name}}">
+  </div>
+
+  <div class="mt-2">
+    <label>Описание</label>
+    <input class="form-control" name="description" value="{{product.description}}">
+  </div>
+
+  <div class="mt-2">
+    <label>Единица измерения</label>
+    <select class="form-select" name="unit">
+      {%for unit in units%}
+      <option value="{{unit.id}}" {%if unit.id == product.unit_id %}selected{%endif%}>{{unit.name}}</option>
+      {%endfor%}
+    </select>
+  </div>
+
+  <div class="mt-2">
+    <label>Бренд</label>
+    <select class="form-select" name="brand">
+      {%for brand in brands%}
+      <option value="{{brand.id}}" {%if brand.id == product.brand_id %}selected{%endif%}>{{brand.name}}</option>
+      {%endfor%}
+    </select>
+  </div>  
+
+  <div class="mt-2">
+    <label>Тип</label>
+    <select class="form-select" name="type">
+      {%for type in types%}
+      <option value="{{type.id}}" {%if type.id == product.type_id %}selected{%endif%}>{{type.name}}</option>
+      {%endfor%}
+    </select>
+  </div>
+
+  <div class="mt-2">
+    <label>Скидка</label>
+    <input class="form-control" type="number" min="0.1"  step="0.1" required name="discount" value="{{product.discount}}">
+  </div>
+  
+  <div class="mt-2">
+    <label>Цена</label>
+    <input class="form-control" type="number" min="0.1" step="0.1" required name="price" value="{{product.price}}">
+  </div>
+
+  <div class="my-2">
+    <label>Количество</label>
+    <input class="form-control" type="number" min="0" step="1" required name="quantity" value="{{product.quantity}}">
+  </div>
+  <a class="btn btn-secondary" href="{% url 'product_list' %}">назад</a>
+  <button type="submit" class="btn accent">Изменить товар</button>
+</form>
+{% endblock content %}

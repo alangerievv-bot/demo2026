@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{%load static%}
+{% block title %}Список товаров{% endblock title %}
+{% block content %}
+<h4>Список товаров</h4>
+
+{% if role_id %}
+<form method="get" id='form'>
+  <input autofocus type="text" name="search" id="searchInput" value="{{search_query}}" class="mb-2 form-control">
+  <select name="brand" class="form-select mb-2">
+    <option value="">Все бренды</option>
+    {% for brand in brands %}
+    <option value="{{brand.id}}" {% if brand_filter == brand.id|stringformat:'s' %}selected{%endif%}>{{brand.name}}</option>
+    {%endfor%}
+  </select>
+
+  <select name="sort" class="form-select mb-2">
+    <option value="">По умолчанию</option>
+    <option value="asc" {% if sort == 'asc' %} selected{% endif %}>По возвр.</option>
+    <option value="desc" {% if sort == 'desc' %}selected{% endif %}>По убыв.</option>
+  </select>
+
+  <a class="btn btn-secondary" href="{% url "product_list" %}">Сбросить</a>
+</form>
+
+<a class="btn accent mt-3" href="{% url "add_product" %}"> Добавить товар</a>
+{% endif %}
+
+<div>
+  <table class="table mt-3 table-bordered">
+    <thead>
+      <tr>
+        <th>Фото</th>
+        <th>Название</th>
+        <th>Описание</th>
+        <th>Бренд</th>
+        <th>Цена</th>
+        <th>Ед. изм.</th>
+        <th>Кол-во</th>
+        <th>Скидка</th>
+        {%if role_id == 1 %}
+        <th>Действия</th>
+        {%endif%}
+      </tr>
+    </thead>
+    <tbody>
+      {% for product in products %}
+      <tr class="{% if not product.is_available %}out-of-stock {% elif product.discount > 15 %} discount-high {% endif %}">
+        <td>
+          {% if product.photo%}
+          <img src="{% static 'images/'|add:product.photo %}" width="100">
+          {% else %}
+          <img src="{% static 'images/icon.jpg' %}">
+          {% endif %}
+        </td>
+
+        <td>{{product.name}}</td>
+        <td>{{product.description}}</td>
+        <td>{{product.brand.name}}</td>
+        <td>
+          {% if product.discount > 0 %}
+            <span class="original-price">{{product.price}}</span>
+            {{product.final_price}}
+          {%else%}
+          {{product.price}}
+          {%endif%}
+        </td>
+        <td>{{product.unit.name}}</td>
+        <td>{{product.quantity}}</td>
+        <td>{{product.discount}}%</td>
+        {%if role_id == 1%}
+        <td>
+          <a href="{%url 'edit_product' product.id %}" class="btn btn-sm btn-warning">Изменить</a>
+          <a href="{%url 'delete_product' product.id %}" class="btn btn-sm btn-danger">Удалить</a>
+        </td>
+        {%endif%}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<script>
+  const form = document.getElementById('form')
+  const inputs = form.querySelectorAll('input, select')
+  inputs.forEach((input) => input.addEventListener('input', () => form.submit()))
+  const searchQuery = document.getElementById('searchInput')
+  if(searchQuery) {
+    const value = searchQuery.value
+    searchQuery.value = ''
+    searchQuery.value = value
+  }
+</script>
+{% endblock content %}

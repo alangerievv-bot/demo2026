@@ -74,12 +74,12 @@ WSGI_APPLICATION = 'cake_store.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {#важна
+DATABASES = { #важна
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': '',
-        'USER': 'postgres',
-        'PASSWORD': '',
+        'NAME': '', # сюда вставить название бд из pgadmin
+        'USER': 'postgres', # название сервера, скорее всего postgres (смотря что выбирал)
+        'PASSWORD': '', # пароль, который вводился при первой установки сервера в pgadmin
         'HOST': 'localhost',
         'PORT': '5432'
     }
